@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar color="primary" dark>
-      <v-app-bar-title>ALP Vue Projekt</v-app-bar-title>
+      <v-app-bar-title>ALP – Web aplikacija</v-app-bar-title>
       <v-spacer />
       <v-btn to="/" variant="text">Početna</v-btn>
       <v-btn to="/products" variant="text">Proizvodi</v-btn>
@@ -12,6 +12,8 @@
       <router-view />
     </v-main>
 
-    <v-footer class="d-flex justify-center py-3">© {{ new Date().getFullYear() }} SUM / FPMOZ</v-footer>
+    <v-footer class="d-flex justify-center py-3">
+      © {{ new Date().getFullYear() }} Zvonimir Ćavar
+    </v-footer>
   </v-app>
 </template>

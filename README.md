@@ -1,4 +1,4 @@
-# Vue 3 + Vite + Vuetify + Router + Axios + Chart.js (READY)
+# Vue 3 + Vite + Vuetify + Router + Axios + Chart.js 
 
 ## Quick start
 1. `npm install`
