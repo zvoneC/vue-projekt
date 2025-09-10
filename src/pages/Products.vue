@@ -13,15 +13,24 @@ const category = ref<string>('')
 const limit = ref(8)
 const skip = ref(0)
 const total = ref(0)
+const loading = ref(false)
 const alert = ref<{type:'success'|'error'|'info'|'warning', text:string}|null>(null)
 
 async function load() {
+  loading.value = true
   try {
-    const data = await fetchProducts({ q: q.value, limit: limit.value, skip: skip.value, category: category.value || undefined })
+    const data = await fetchProducts({
+      q: q.value,
+      limit: limit.value,
+      skip: skip.value,
+      category: category.value || undefined
+    })
     products.value = data.products
     total.value = data.total
-  } catch (e:any) {
+  } catch {
     alert.value = { type: 'error', text: 'Greška pri dohvaćanju podataka.' }
+  } finally {
+    loading.value = false
   }
 }
 async function loadCategories(){ categories.value = await fetchCategories() }
@@ -46,13 +55,20 @@ onMounted(()=>{ load(); loadCategories() })
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-progress-circular v-if="loading" class="my-6 d-flex mx-auto" indeterminate size="32" />
+
+    <div v-else-if="!products.length" class="text-center my-8">
+      Nema rezultata za zadane filtere.
+    </div>
+
+    <v-row v-else>
       <v-col v-for="p in products" :key="p.id" cols="12" md="4" lg="3">
         <v-card>
           <v-img :src="p.thumbnail" height="160" cover />
           <v-card-title class="text-wrap">{{ p.title }}</v-card-title>
           <v-card-subtitle class="d-flex ga-2 flex-wrap">
-            <TagChip :text="p.category" /> <TagChip :text="p.brand" />
+            <TagChip :text="p.category" />
+            <TagChip :text="p.brand" />
           </v-card-subtitle>
           <v-card-text>{{ p.description?.slice(0,120) }}...</v-card-text>
           <v-card-actions>

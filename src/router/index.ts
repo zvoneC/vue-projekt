@@ -10,6 +10,9 @@ const routes = [
   { path: '/products/new', name: 'product-new', component: ProductForm },
   { path: '/products/:id/edit', name: 'product-edit', component: ProductForm, props: true },
   { path: '/about', name: 'about', component: About },
+  { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/pages/NotFound.vue') },
+
+
 ]
 
 export default createRouter({ history: createWebHistory(), routes })
