@@ -36,6 +36,11 @@ async function load() {
 async function loadCategories(){ categories.value = await fetchCategories() }
 watch([q, category, skip, limit], load)
 onMounted(()=>{ load(); loadCategories() })
+async function removeItem(id: number) {
+  if (!confirm('Obrisati proizvod?')) return
+  await fetch(`https://dummyjson.com/products/${id}`, { method: 'DELETE' })
+  products.value = products.value.filter(p => p.id !== id)
+}
 </script>
 
 <template>
@@ -72,7 +77,10 @@ onMounted(()=>{ load(); loadCategories() })
           </v-card-subtitle>
           <v-card-text>{{ p.description?.slice(0,120) }}...</v-card-text>
           <v-card-actions>
-            <v-btn :to="`/products/${p.id}/edit`" size="small">Uredi</v-btn>
+             <v-btn :to="`/products/${p.id}/edit`" size="small">Uredi</v-btn>
+            <v-spacer />
+  <v-btn color="red" size="small" @click="removeItem(p.id)">Obriši</v-btn>
+        
             <v-spacer />
             <v-chip>{{ p.price }} $</v-chip>
           </v-card-actions>
